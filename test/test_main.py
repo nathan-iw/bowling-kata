@@ -3,7 +3,6 @@ from Game import Game
 
 class Test_Game(unittest.TestCase):
 
-
     def setUp(self):
         self.g = Game()
 
@@ -11,11 +10,15 @@ class Test_Game(unittest.TestCase):
         for i in range(n): 
             self.g.roll(pins)
 
+    def roll_many_spares(self, n, ball_one, ball_two):
+        for i in range(n):
+            self.g.roll(ball_one)
+            self.g.roll(ball_two)
+
     def test_gutter_game(self):
         self.roll_many(20, 0)
         self.assertEqual(0, self.g.get_score())
 
-    
     def test_all_one(self):
         self.roll_many(20, 1)
         self.assertEqual(20, self.g.get_score())
@@ -40,9 +43,14 @@ class Test_Game(unittest.TestCase):
         self.roll_many(16, 0)
         self.assertEqual(24, self.g.get_score())
 
+    def test_perfect_game(self):
+        self.roll_many(12, 10)
+        self.assertEqual(300, self.g.get_score())
 
-
-
+    def test_highest_spare(self):
+        self.roll_many_spares(10, 9, 1)
+        self.g.roll(9)
+        self.assertEqual(190, self.g.get_score())
 
 
     
