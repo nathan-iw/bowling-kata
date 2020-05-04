@@ -7,13 +7,17 @@ class Game:
 
     def get_score(self):
         score = 0
-        i = 0
-        for frame in range(10):
-            if self.rolls[i] + self.rolls[i+1] == 10:
-                score += 10 + self.rolls[i+2]
-                i += 2
+        rolly_index = 0
+        # [5,5,3,0,0,0,0,0,]
+        for frame in range(10): 
+            if self.spare_catcher(rolly_index): 
+                score += 10 + self.rolls[rolly_index+2]
+                rolly_index += 2
             else:
-                score += self.rolls[i] + self.rolls[i+1]
-                i += 2
+                score += self.rolls[rolly_index] + self.rolls[rolly_index+1]
+                rolly_index += 2
         return score
     
+    def spare_catcher(self, rolly_index):
+        return self.rolls[rolly_index] + self.rolls[rolly_index+1] == 10
+
