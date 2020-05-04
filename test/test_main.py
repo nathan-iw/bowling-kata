@@ -3,18 +3,24 @@ from Game import Game
 
 class Test_Game(unittest.TestCase):
 
+
+    def setUp(self):
+        self.g = Game()
+
+    def roll_many(self, n, pins):
+        for i in range(n): 
+            self.g.roll(pins)
+
     def test_gutter_game(self):
-        g = Game()
-        for i in range(20): 
-            g.roll(0)
-        self.assertEqual(0, g.get_score())
+        self.roll_many(20, 0)
+        self.assertEqual(0, self.g.get_score())
 
     
     def test_all_one(self):
-        g = Game()
-        for i in range(20):
-            g.roll(1)
-        self.assertEqual(20, g.get_score())
+        self.roll_many(20, 1)
+        self.assertEqual(20, self.g.get_score())
+
+
 
     
 if __name__ == '__main__':
