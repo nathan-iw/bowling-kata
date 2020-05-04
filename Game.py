@@ -8,9 +8,12 @@ class Game:
     def get_score(self):
         score = 0
         rolly_index = 0
-        # [5,5,3,0,0,0,0,0,]
+        # [10,3,4,0,0,0,0,0,]
         for frame in range(10): 
-            if self.spare_catcher(rolly_index): 
+            if self.strike_catcher(rolly_index):
+                score += 10 + self.rolls[rolly_index+1] + self.rolls[rolly_index+2]
+                rolly_index += 1
+            elif self.spare_catcher(rolly_index): 
                 score += 10 + self.rolls[rolly_index+2]
                 rolly_index += 2
             else:
@@ -20,4 +23,9 @@ class Game:
     
     def spare_catcher(self, rolly_index):
         return self.rolls[rolly_index] + self.rolls[rolly_index+1] == 10
+    
+    def strike_catcher(self, rolly_index):
+        return self.rolls[rolly_index] == 10
+
+    
 
