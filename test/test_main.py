@@ -1,5 +1,7 @@
 import unittest 
 from Game import Game
+from unittest.mock import Mock, patch, call, MagicMock
+
 
 class Test_Game(unittest.TestCase):
 
@@ -52,7 +54,42 @@ class Test_Game(unittest.TestCase):
         self.g.roll(9)
         self.assertEqual(190, self.g.get_score())
 
+    def get_many_user_rolls(self, num):
+        for i in range(num):
+            self.g.get_user_roll()
 
-    
+    @patch("builtins.input")
+    def test_current_score(self, pinput):
+        # arrange
+
+        pinput.side_effect = ["1", "1", "1", "1"]
+        expected = [2, 2]
+        exp_total = 4
+        # act
+        self.get_many_user_rolls(4)
+        actual = self.g.get_current_score()
+        act_total = self.g.total
+        #  [2, 2] Total: 4
+        # assert
+        self.assertEqual(expected, actual)
+        self.assertEqual(exp_total, act_total)
+
+    @patch("builtins.input")
+    def test_current_score_spares(self, pinput):
+        # arrange
+
+        pinput.side_effect = ["9", "1", "9", "1", "9", "1", "9", "1", "9", "1", "9", "1", "9", "1", "9", "1", "9", "1", "9", "1", "9"]
+        expected = [19, 19, 19, 19, 19, 19, 19, 19, 19, "/"]
+        exp_total = 171
+        # act
+        self.get_many_user_rolls(20)
+        actual = self.g.get_current_score()
+        act_total = self.g.total
+        #  [2, 2] Total: 4
+        # assert
+        self.assertEqual(expected, actual)
+        self.assertEqual(exp_total, act_total)
+        
+        
 if __name__ == '__main__':
     unittest.main()
